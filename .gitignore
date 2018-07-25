@@ -4,3 +4,4 @@ client/node_modules
 server
 package.json
 package-lock.json
+.idea
