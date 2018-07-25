@@ -1,7 +1,9 @@
 import {Component, ViewChild} from '@angular/core';
 import {AppService} from './app.service';
 
-import { MultiSelectComponent } from './multi-select/multi-select.component';
+import { AddItemModalComponent } from './add-item-modal/add-item-modal.component';
+import { DeleteItemModalComponent } from './delete-item-modal/delete-item-modal.component';
+import {Observable, Subject} from "rxjs/index";
 
 
 @Component({
@@ -12,9 +14,11 @@ import { MultiSelectComponent } from './multi-select/multi-select.component';
 
 export class AppComponent {
   title = 'Angular Skill Challenge';
-@ViewChild("") multiSelect: MultiSelectComponent;
-  items: any[];
 
+  @ViewChild(AddItemModalComponent) addModal: AddItemModalComponent;
+  @ViewChild(DeleteItemModalComponent) deleteModal: DeleteItemModalComponent;
+
+  items: any[];
   tags: any[];
 
   constructor(public service: AppService) {
@@ -32,11 +36,14 @@ this.getItems();
   }
 
   getItems() {
+   this.service.getItems().subscribe(()=>{});
 //todo
   }
 
   addItem(){
+this.addModal.showModal(this.tags).subscribe(()=>{
 
+});
   }
 
   deleteItem(id: any) {
