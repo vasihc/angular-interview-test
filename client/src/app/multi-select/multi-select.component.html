@@ -1,3 +1,15 @@
-<p>
-  multi-select works!
-</p>
+<input type="text"
+       (focus)="toggle()"
+       placeholder="Write to search"
+       [(ngModel)]="searchText"
+       class="form-control"
+       name="tag"
+       autocomplete="off"
+       [style.border-color]="selectedColor">
+<ul *ngIf="collapse" class="dropdown bg-white">
+  <li *ngFor="let tag of tagsList | multiPipe : searchText" (click)="selectItem(tag)"
+      [style.color]="getColorByIndex(tag.key)">
+    {{tag.val}}
+  </li>
+  <li *ngIf="tagsCount < 1">No tags</li>
+</ul>

@@ -1,0 +1,25 @@
+<div class="bg-dark">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-title">{{title}}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="closeModal(false)">
+      <span aria-hidden="true" class="text-light">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" action="submit">
+      <div class="form-group">
+        <label for="content">Content:</label>
+        <input type="text" aria-describedby="toDo" autocomplete="off" placeholder="Enter ToDo" class="form-control"
+               id="content" formControlName="content" required>
+      </div>
+      <div class="form-group">
+        <label for="tag">Tag:</label>
+        <multi-select [tags]="tags" (selected)="onSelect($event)" id="tag"></multi-select>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-outline-info" type="button" aria-label="Close" (click)="closeModal(false)">Close</button>
+    <button type="submit" class="btn btn-outline-danger" [disabled]="!form.valid">Save</button>
+  </div>
+</div>

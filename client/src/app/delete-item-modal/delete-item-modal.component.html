@@ -1,0 +1,17 @@
+ <div class="bg-dark">
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-title">Delete item</h4>
+      <button type="button" class="close" aria-label="Close" (click)="closeModal(false)">
+        <span aria-hidden="true" class="text-light">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <h4>
+        Are you sure want to delete item?
+      </h4>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline-info" type="button"  aria-label="Close" (click)="closeModal(false)">No</button>
+      <button  class="btn btn-outline-danger" (click)="closeModal(true);">Yes</button>
+    </div>
+  </div>

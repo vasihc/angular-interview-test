@@ -1,0 +1,16 @@
+.dropdown {
+  width: 90%;
+  position: absolute;
+  left: 20px;
+  z-index: 999;
+  border-radius: 8px;
+  padding: 20px 40px;
+}
+
+.dropdown li {
+  cursor: pointer;
+  user-select: none;
+  border-bottom: 1px solid darkblue;
+  padding: 5px 0;
+  color: darkblue;
+}

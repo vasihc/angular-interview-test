@@ -1,10 +1,10 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component} from '@angular/core';
 import {AppService} from './app.service';
 
-import { AddItemModalComponent } from './add-item-modal/add-item-modal.component';
-import { DeleteItemModalComponent } from './delete-item-modal/delete-item-modal.component';
-import {Observable, Subject} from "rxjs/index";
+import {AddItemModalComponent} from './add-item-modal/add-item-modal.component';
+import {DeleteItemModalComponent} from './delete-item-modal/delete-item-modal.component';
 
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-root',
@@ -13,41 +13,50 @@ import {Observable, Subject} from "rxjs/index";
 })
 
 export class AppComponent {
-  title = 'Angular Skill Challenge';
-
-  @ViewChild(AddItemModalComponent) addModal: AddItemModalComponent;
-  @ViewChild(DeleteItemModalComponent) deleteModal: DeleteItemModalComponent;
-
-  items: any[];
+  title = 'Skill Challenge';
+  items: any[] = [];
   tags: any[];
 
-  constructor(public service: AppService) {
+  constructor(public service: AppService, private modalService: NgbModal) {
     this.getTags();
   }
 
   ngOnInit() {
-this.getItems();
+    this.getItems();
   }
 
   getTags() {
-    this.service.getTags().subscribe((items) => {
-      this.tags = items.map(item => item.color);
+    this.service.getTags().subscribe((res) => {
+      this.tags = res.items;
     });
   }
 
-  getItems() {
-   this.service.getItems().subscribe(()=>{});
-//todo
+  getItems(hash = null) {
+    this.service.getItems(hash).subscribe((res) => {
+      this.items = this.items.concat(res.items);
+      if (res.finish === false)
+        this.getItems(res.hash);
+    });
   }
 
-  addItem(){
-this.addModal.showModal(this.tags).subscribe(()=>{
+  addItem() {
+    this.modalService.open(AddItemModalComponent).result.then((result) => {
 
-});
+    }).catch();
   }
 
-  deleteItem(id: any) {
-   //todo open accept modal delete and if ok - delete from list.
+  deleteItem(item: any) {
+    this.modalService.open(DeleteItemModalComponent).result.then((result) => {
+      if (result)
+        this.service.deleteItem(item).subscribe((res) => {
+          if (res) {
+            console.log(res);
+            this.items.slice(this.items.indexOf(item), 1);
+          }
+        })
+    }).catch((error) => {
+      console.log(error);
+    });
   }
 
 }
