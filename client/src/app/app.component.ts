@@ -41,7 +41,7 @@ export class AppComponent {
 
   addItem() {
     this.modalService.open(AddItemModalComponent).result.then((result) => {
-
+      this.items.push(result);
     }).catch();
   }
 
@@ -50,8 +50,7 @@ export class AppComponent {
       if (result)
         this.service.deleteItem(item).subscribe((res) => {
           if (res) {
-            console.log(res);
-            this.items.slice(this.items.indexOf(item), 1);
+            this.items.splice(this.items.indexOf(item), 1);
           }
         })
     }).catch((error) => {

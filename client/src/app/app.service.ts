@@ -3,9 +3,11 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 const httpOptions = {
-  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+  headers: new HttpHeaders({
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin':'*',
+  })
 };
-
 
 @Injectable()
 export class AppService  {
@@ -27,21 +29,19 @@ export class AppService  {
   }
 
   public addItem(item: any)  {
-    return this.httpClient.post(`${this.API_URL}/api/v0/todos/item/`, item);
+    return this.httpClient.post(`${this.API_URL}/api/v0/todos/item/`, item, httpOptions);
   }
 
    public deleteItem(item: any) : Observable<any>{
      let url = `${this.API_URL}/api/v0/todo/item/${item.id}`;
-    return this.httpClient.delete(url);
+    return this.httpClient.delete(url, httpOptions);
   }
-
 
 
   private extract(res: Response) {
     let body = res.json();
     return body;
   }
-
 
   private handleError(e: any) {
    if (e.json() && e.json().error) {

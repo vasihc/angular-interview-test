@@ -1,8 +1,8 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {Observable, Subject} from "rxjs";
+import {Component, ViewChild} from '@angular/core';
+import { Subject} from "rxjs";
 import {AppService} from "../app.service";
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import {FormControl, FormBuilder, Validators} from '@angular/forms';
+import {FormBuilder, Validators} from '@angular/forms';
 import {MultiSelectComponent} from "../multi-select/multi-select.component";
 
 @Component({
@@ -10,13 +10,13 @@ import {MultiSelectComponent} from "../multi-select/multi-select.component";
   templateUrl: './add-item-modal.component.html',
   styleUrls: ['./add-item-modal.component.css']
 })
-export class AddItemModalComponent implements OnInit {
+export class AddItemModalComponent  {
 
   @ViewChild(MultiSelectComponent) public multiSelect: MultiSelectComponent;
 
   form = this.fb.group({
-    tag: new FormControl(),
-    content: ""
+    tag: [null, [Validators.required]],
+    content: [null, [Validators.required]]
   });
 
   title: string = "Add new Todo:";
@@ -30,20 +30,21 @@ export class AddItemModalComponent implements OnInit {
     })
   }
 
-  ngOnInit() {
+  onSelect($event) {
+    this.form.patchValue({tag: $event})
   }
 
-  onSelect($event){
-    console.log($event);
+  onSubmit($event) {
+    if (this.form.valid) {
+      $event.target.disabled = true;
+      this.service.addItem(this.form.value).subscribe((res) => {
+        $event.target.disabled = false;
+        this.modal.close(res);
+      });
+    }
   }
 
-
-  onSubmit() {
-    // TODO: Use EventEmitter with form value
-    console.warn(this.form.value);
-  }
-
-  closeModal(result: boolean) {
-    this.modal.close(result);
+  closeModal() {
+    this.modal.dismiss();
   }
 }
